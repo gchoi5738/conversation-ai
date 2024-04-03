@@ -63,6 +63,11 @@
                 margin-bottom: 10px;
             }
         }
+        .warning {
+            color: #ff6600;
+            font-weight: bold;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -72,6 +77,9 @@
         <input type="file" id="audio-file" name="audio_file" accept=".mp3,.wav,.ogg" required>
         <button type="submit">Transcribe</button>
     </form>
+    <div class="warning">
+        <p>Please note that for longer audio files (> 5 minutes), the transcription process may take more time to complete.</p>
+    </div>
     <div class="loading" id="loading">
         <p>Transcribing audio and generating insights... Please wait.</p>
     </div>
@@ -112,6 +120,7 @@
                 } else {
                     conversationDiv.textContent = 'Error: Unable to retrieve conversation.';
                     insightsDiv.textContent = 'Error: Unable to retrieve insights.';
+                    alert('An error occurred during transcription. Please try again. Sometimes the server may take a few moments to set up and process the request.');
                 }
             })
             .catch(error => {
@@ -119,6 +128,7 @@
                 resultDiv.style.display = 'block';
                 conversationDiv.textContent = 'Error: ' + error;
                 insightsDiv.textContent = 'Error: Unable to retrieve insights.';
+                alert('An error occurred during transcription. Please try again. Sometimes the server may take a few moments to set up and process the request.');
             });
         });
     </script>

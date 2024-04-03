@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-ic0xe_$d$vrfe(z^z-pb^8#($ie4!b%swc&n=!0fyoua!n+!8r
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['conversation-ai-4ijdjf7hua-uc.a.run.app']
+ALLOWED_HOSTS = ['conversation-ai-4ijdjf7hua-uc.a.run.app', 'localhost']
 
 
 # Application definition
