@@ -21,6 +21,6 @@ from conversation.views import transcribe_uploaded_audio, upload_audio_view
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('transcribe/', transcribe_uploaded_audio, name='transcribe_uploaded_audio'),
-    path('upload/', upload_audio_view, name='upload_audio'),
+    path('', upload_audio_view, name='upload_audio'),
 
 ]
