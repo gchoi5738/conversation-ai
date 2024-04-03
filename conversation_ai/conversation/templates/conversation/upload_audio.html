@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Transcription</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        input[type="file"] {
+            padding: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #result {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .note {
+            color: #666;
+            font-style: italic;
+            margin-top: 10px;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-width: 100%;
+            overflow-x: auto;
+        }
+        .loading {
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+        @media screen and (max-width: 600px) {
+            form {
+                flex-direction: column;
+                align-items: center;
+            }
+            input[type="file"], button {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Psychological Insights Derived From Conversation</h1>
+    <form id="upload-form" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" id="audio-file" name="audio_file" accept=".mp3,.wav,.ogg" required>
+        <button type="submit">Transcribe</button>
+    </form>
+    <div class="loading" id="loading">
+        <p>Transcribing audio and generating insights... Please wait.</p>
+    </div>
+    <div id="result" style="display: none;">
+        <h2>Conversation:</h2>
+        <pre id="conversation"></pre>
+        <div class="note">Note: The speakers are inferred and may not be differentiated accurately.</div>
+        <h2>Insights:</h2>
+        <pre id="insights"></pre>
+    </div>
+
+    <script>
+        const form = document.getElementById('upload-form');
+        const conversationDiv = document.getElementById('conversation');
+        const insightsDiv = document.getElementById('insights');
+        const loadingDiv = document.getElementById('loading');
+        const resultDiv = document.getElementById('result');
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            loadingDiv.style.display = 'block';
+            resultDiv.style.display = 'none';
+
+            const formData = new FormData(form);
+
+            fetch('{% url 'transcribe_uploaded_audio' %}', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                loadingDiv.style.display = 'none';
+                resultDiv.style.display = 'block';
+
+                if (data.conversation && data.insights) {
+                    conversationDiv.textContent = data.conversation;
+                    insightsDiv.textContent = data.insights;
+                } else {
+                    conversationDiv.textContent = 'Error: Unable to retrieve conversation.';
+                    insightsDiv.textContent = 'Error: Unable to retrieve insights.';
+                }
+            })
+            .catch(error => {
+                loadingDiv.style.display = 'none';
+                resultDiv.style.display = 'block';
+                conversationDiv.textContent = 'Error: ' + error;
+                insightsDiv.textContent = 'Error: Unable to retrieve insights.';
+            });
+        });
+    </script>
+</body>
+</html>
