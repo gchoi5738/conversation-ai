@@ -2,6 +2,9 @@
 
 Conversation AI is a web application that transcribes audio conversations and provides psychological insights and sentiment analysis for the speakers involved. The application utilizes the Deepgram API for speech-to-text transcription and OpenAI's GPT-3.5-turbo model for generating insightful analysis of the conversation.
 
+The web application is currently live [here](https://conversation-ai-4ijdjf7hua-uc.a.run.app).
+
+
 ## Features
 
 - Upload audio files containing conversations between multiple speakers
